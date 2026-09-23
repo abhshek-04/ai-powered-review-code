@@ -399,6 +399,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   GithubInstallation: 'GithubInstallation',
+  PullRequest: 'PullRequest',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "githubInstallation" | "session" | "account" | "verification"
+    modelProps: "user" | "githubInstallation" | "pullRequest" | "session" | "account" | "verification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -566,6 +567,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.GithubInstallationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.GithubInstallationCountAggregateOutputType> | number
+        }
+      }
+    }
+    PullRequest: {
+      payload: Prisma.$PullRequestPayload<ExtArgs>
+      fields: Prisma.PullRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PullRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PullRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.PullRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PullRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        findMany: {
+          args: Prisma.PullRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>[]
+        }
+        create: {
+          args: Prisma.PullRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        createMany: {
+          args: Prisma.PullRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PullRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.PullRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        update: {
+          args: Prisma.PullRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.PullRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PullRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PullRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.PullRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PullRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.PullRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePullRequest>
+        }
+        groupBy: {
+          args: Prisma.PullRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PullRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PullRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PullRequestCountAggregateOutputType> | number
         }
       }
     }
@@ -854,6 +929,25 @@ export const GithubInstallationScalarFieldEnum = {
 } as const
 
 export type GithubInstallationScalarFieldEnum = (typeof GithubInstallationScalarFieldEnum)[keyof typeof GithubInstallationScalarFieldEnum]
+
+
+export const PullRequestScalarFieldEnum = {
+  id: 'id',
+  installationId: 'installationId',
+  repoFullName: 'repoFullName',
+  prNumber: 'prNumber',
+  title: 'title',
+  authorLogin: 'authorLogin',
+  headSha: 'headSha',
+  baseBranch: 'baseBranch',
+  status: 'status',
+  reviewComment: 'reviewComment',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PullRequestScalarFieldEnum = (typeof PullRequestScalarFieldEnum)[keyof typeof PullRequestScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1146,6 +1240,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   githubInstallation?: Prisma.GithubInstallationOmit
+  pullRequest?: Prisma.PullRequestOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
