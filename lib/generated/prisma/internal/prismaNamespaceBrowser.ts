@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   GithubInstallation: 'GithubInstallation',
+  PullRequest: 'PullRequest',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification'
@@ -98,6 +99,25 @@ export const GithubInstallationScalarFieldEnum = {
 } as const
 
 export type GithubInstallationScalarFieldEnum = (typeof GithubInstallationScalarFieldEnum)[keyof typeof GithubInstallationScalarFieldEnum]
+
+
+export const PullRequestScalarFieldEnum = {
+  id: 'id',
+  installationId: 'installationId',
+  repoFullName: 'repoFullName',
+  prNumber: 'prNumber',
+  title: 'title',
+  authorLogin: 'authorLogin',
+  headSha: 'headSha',
+  baseBranch: 'baseBranch',
+  status: 'status',
+  reviewComment: 'reviewComment',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PullRequestScalarFieldEnum = (typeof PullRequestScalarFieldEnum)[keyof typeof PullRequestScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
