@@ -30,15 +30,17 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SettingsProfile } from "@/features/settings/types";
-import { UsageSummary } from "@/features/billing/server/usage";
+import type { UsageSummary } from "@/features/billing/server/usage";
 import { statusBadge } from "../lib/status-style";
 import { CancelSubscriptionButton } from "@/features/billing/components/cancel-subscription-button";
 import { getDisplayName, getInitials } from "@/features/auth/components/user-menu";
+import { CheckIcon } from "@phosphor-icons/react";
 
 type SettingsContentProps = {
   profile: SettingsProfile;
   subscription: UserSubscription;
   usage: UsageSummary;
+  defaultTab?: "profile" | "subscription";
 };
 
 /**
@@ -165,74 +167,95 @@ function SubscriptionTab({
   const renewalDate = formatRenewalDate(subscription.renewsAt);
   const statusLabel = getSubscriptionStatusLabel(subscription.status);
 
-  const isActive = subscription.status === "active" || subscription.status === "trialing";
+  const isPro = subscription.plan === "pro";
+  const isCanceled = subscription.status === "canceled";
 
-  // Visual styling reflects active vs inactive subscription
-  let cardBorderClass = "border-border";
-  let planTextClass = "text-foreground";
-  let statusTextClass = "text-muted-foreground";
-  let badgeTone: "success" | "neutral" | "warning" = "neutral";
-
-  if (isActive) {
-    cardBorderClass = "border-green-500/25";
-    planTextClass = "text-green-800 dark:text-green-300";
-    statusTextClass = "text-green-700 dark:text-green-400";
-    badgeTone = "success";
-  }
-
-  if (subscription.status === "canceled") {
+  let badgeTone: "success" | "neutral" | "warning" = isPro ? "success" : "neutral";
+  if (isCanceled) {
     badgeTone = "warning";
   }
 
+  const usagePercent =
+    usage.limit === null ? 100 : Math.min(100, Math.round((usage.used / usage.limit) * 100));
+
   return (
-    <Card className={cardBorderClass}>
-      <CardHeader>
-        <CardTitle>Subscription</CardTitle>
-        <CardDescription>
-          Manage your plan and billing for AI code reviews.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div
-          className={cn(
-            "flex flex-wrap items-center justify-between gap-4 rounded-none border p-4",
-            isActive
-              ? "border-green-500/30 bg-green-500/5"
-              : "border-border bg-muted/30"
-          )}
-        >
-          <div>
-            <p className={cn("font-medium", planTextClass)}>
-              {planDetails.label} plan
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Status:{" "}
-              <span className={statusTextClass}>{statusLabel}</span>
-            </p>
-            {renewalDate ? (
+    <div className="space-y-4">
+      <Card className={cn(isPro && !isCanceled && "ring-primary/30")}>
+        <CardHeader>
+          <CardTitle>Current plan</CardTitle>
+          <CardDescription>
+            Manage your plan and billing for AI code reviews.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <div
+            className={cn(
+              "flex flex-wrap items-center justify-between gap-4 rounded-lg border p-4",
+              isPro && !isCanceled ? "border-primary/30 bg-primary/5" : "bg-muted/30"
+            )}
+          >
+            <div className="space-y-0.5">
+              <p className="text-base font-semibold">{planDetails.label} plan</p>
               <p className="text-xs text-muted-foreground">
-                Renews {renewalDate}
+                Status: <span className="capitalize text-foreground">{statusLabel}</span>
+                {renewalDate ? ` · ${isCanceled ? "Ends" : "Renews"} ${renewalDate}` : null}
               </p>
-            ) : null}
+            </div>
+            <span className={statusBadge(badgeTone)}>{planDetails.label}</span>
           </div>
-          <span className={statusBadge(badgeTone)}>{planDetails.label}</span>
-        </div>
-        <p className="text-xs text-muted-foreground">{getUsageText(usage)}</p>
-        <ul className="space-y-2 text-xs text-muted-foreground">
-          {planDetails.features.map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
-      </CardContent>
-      <CardFooter className="flex flex-wrap gap-2">
-        {subscription.plan === "free" ? <UpgradeButton /> : null}
-        {subscription.plan === "pro" ? (
-          <CancelSubscriptionButton
-            disabled={subscription.status === "canceled"}
-          />
-        ) : null}
-      </CardFooter>
-    </Card>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium">Reviews this month</span>
+              <span className="tabular-nums text-muted-foreground">{getUsageText(usage)}</span>
+            </div>
+            <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+              <div
+                className={cn(
+                  "h-full rounded-full transition-all",
+                  usagePercent >= 100 && usage.limit !== null ? "bg-amber-500" : "bg-primary"
+                )}
+                style={{ width: `${usagePercent}%` }}
+              />
+            </div>
+          </div>
+
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            {planDetails.features.map((feature) => (
+              <li key={feature} className="flex items-center gap-2">
+                <CheckIcon weight="bold" className="size-3.5 text-primary" />
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+        <CardFooter className="flex flex-wrap gap-2 border-t">
+          {subscription.plan === "free" ? <UpgradeButton /> : null}
+          {subscription.plan === "pro" ? (
+            <CancelSubscriptionButton disabled={isCanceled} />
+          ) : null}
+        </CardFooter>
+      </Card>
+
+      {subscription.plan === "free" ? (
+        <Card className="ring-primary/30">
+          <CardHeader>
+            <CardTitle>{PLAN_DETAILS.pro.label}</CardTitle>
+            <CardDescription>Everything you need for a busy team.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              {PLAN_DETAILS.pro.features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2">
+                  <CheckIcon weight="bold" className="size-3.5 text-primary" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      ) : null}
+    </div>
   );
 }
 
@@ -248,10 +271,11 @@ export function SettingsContent({
   profile,
   subscription,
   usage,
+  defaultTab = "profile",
 }: SettingsContentProps) {
   return (
-    <div className="flex flex-1 flex-col p-6">
-      <Tabs defaultValue="profile" className="w-full max-w-2xl">
+    <div className="flex flex-1 flex-col">
+      <Tabs defaultValue={defaultTab} className="w-full max-w-2xl">
         <TabsList>
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="subscription">Subscription</TabsTrigger>

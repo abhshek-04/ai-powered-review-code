@@ -2,23 +2,21 @@ import { cn } from "@/lib/utils";
 
 /** Background, border, and text colors for inline status badges. */
 export const statusBadgeClass = {
-  success:
-    "border-green-500/40 bg-green-500/15 text-green-700 dark:text-green-400",
+  success: "border-primary/30 bg-primary/10 text-primary",
   warning:
-    "border-amber-500/40 bg-amber-500/15 text-amber-700 dark:text-amber-400",
-  danger: "border-red-500/40 bg-red-500/15 text-red-700 dark:text-red-400",
-  info: "border-blue-500/40 bg-blue-500/15 text-blue-700 dark:text-blue-400",
-  neutral: "border-border bg-muted text-muted-foreground",
+    "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  danger: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400",
+  info: "border-sky-500/30 bg-sky-500/10 text-sky-700 dark:text-sky-400",
+  neutral: "border-border bg-muted/60 text-muted-foreground",
 } as const;
 
 /** Button variants for primary actions like "Install" or "Disconnect". */
 export const statusButtonClass = {
-  success:
-    "bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500/50 dark:bg-green-600 dark:hover:bg-green-500",
+  success: "",
   danger:
-    "border-red-500/50 bg-red-500/10 text-red-700 hover:bg-red-500/20 dark:text-red-400 dark:hover:bg-red-500/20",
+    "border-red-500/40 bg-transparent text-red-600 hover:bg-red-500/10 hover:text-red-600 dark:border-red-500/30 dark:bg-transparent dark:text-red-400 dark:hover:bg-red-500/10",
   warning:
-    "border-amber-500/50 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 dark:text-amber-400",
+    "border-amber-500/40 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 dark:text-amber-400",
 } as const;
 
 /**
@@ -33,7 +31,7 @@ export function statusBadge(
   className?: string
 ) {
   return cn(
-    "inline-flex items-center rounded-none border px-2 py-0.5 text-xs font-medium capitalize",
+    "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize leading-4",
     statusBadgeClass[tone],
     className
   );

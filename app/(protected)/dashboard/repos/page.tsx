@@ -1,32 +1,49 @@
-
-
 import type { Metadata } from "next";
 import Link from "next/link";
+import { GithubLogoIcon } from "@phosphor-icons/react/ssr";
 
-import { DashboardHeader } from "@/features/dashboard/components/dashboard-header";
-
+import {
+  DashboardContent,
+  DashboardHeader,
+} from "@/features/dashboard/components/dashboard-header";
 import { DASHBOARD_ROUTES } from "@/features/dashboard/lib/routes";
 import { getInstallationStatus } from "@/features/github/server/installation";
 
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { requireAuth } from "@/features/auth/actions";
 import { RepoList } from "@/features/dashboard/components/repo-list";
 
 export const metadata: Metadata = {
-  title: "Repositories · Dashboard",
+  title: "Repositories",
 };
-
 
 function ReposNotConnected() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6">
-      <p className="text-sm text-muted-foreground">
-        Install the GitHub App first to see your repositories.
-      </p>
-      <Button nativeButton={false} render={<Link href={DASHBOARD_ROUTES.github} />}>
-        Go to GitHub App
-      </Button>
-    </div>
+    <Empty className="rounded-xl border">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <GithubLogoIcon />
+        </EmptyMedia>
+        <EmptyTitle>Connect GitHub to see repositories</EmptyTitle>
+        <EmptyDescription>
+          Install the GitHub App first. Your repositories will appear here once
+          access is granted.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button nativeButton={false} render={<Link href={DASHBOARD_ROUTES.github} />}>
+          Go to GitHub App
+        </Button>
+      </EmptyContent>
+    </Empty>
   );
 }
 
@@ -39,26 +56,15 @@ export default async function DashboardReposPage() {
   const session = await requireAuth();
   const installation = await getInstallationStatus(session.user.id);
 
-  const header = (
-    <DashboardHeader
-      title="Repositories"
-      description="All public and private repositories available to the GitHub App."
-    />
-  );
-
-  if (!installation.connected) {
-    return (
-      <>
-        {header}
-        <ReposNotConnected />
-      </>
-    );
-  }
-
   return (
     <>
-      {header}
-      <RepoList />
+      <DashboardHeader
+        title="Repositories"
+        description="All public and private repositories available to the GitHub App."
+      />
+      <DashboardContent>
+        {installation.connected ? <RepoList /> : <ReposNotConnected />}
+      </DashboardContent>
     </>
   );
 }

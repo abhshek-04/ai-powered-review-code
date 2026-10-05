@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
-
+import { LogoMark } from "@/components/brand/logo";
 import { DASHBOARD_ROUTES } from "@/features/dashboard/lib/routes";
 import { DashboardNav } from "@/features/dashboard/components/dashboard-nav";
 import { SidebarUserButton } from "@/features/dashboard/components/sidebar-user-button";
@@ -14,38 +13,35 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import { UserMenuUser } from "@/features/auth/components/user-menu";
+import type { UsageSummary } from "@/features/billing/server/usage";
+import { SidebarUpgradeCard } from "@/features/billing/components/sidebar-upgrade-card";
 
 type DashboardSidebarProps = {
   user: UserMenuUser;
   plan?: string;
+  upgradeUsage?: UsageSummary | null;
 };
 
-export function DashboardSidebar({ user, plan = "Pro" }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  user,
+  plan = "Free",
+  upgradeUsage = null,
+}: DashboardSidebarProps) {
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="h-14 justify-center border-b border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              size="lg"
-              tooltip="ChaiCodeAIReview"
+              tooltip="Chai Review"
+              className="hover:bg-transparent active:bg-transparent"
               render={
                 <Link href={DASHBOARD_ROUTES.overview}>
-                  <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-none bg-sidebar">
-                    <Image
-                      src="/logo2.svg"
-                      alt=""
-                      width={62}
-                      height={62}
-                      className="object-contain"
-                    />
-                  </span>
-                  <span className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
-                    <span className="truncate font-medium">ChaiCodeAIReview</span>
-                   
+                  <LogoMark className="size-6 group-data-[collapsible=icon]:size-5" />
+                  <span className="truncate text-[15px] font-semibold tracking-tight">
+                    Chai<span className="font-medium text-muted-foreground"> Review</span>
                   </span>
                 </Link>
               }
@@ -53,11 +49,11 @@ export function DashboardSidebar({ user, plan = "Pro" }: DashboardSidebarProps) 
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="pt-2">
         <DashboardNav />
       </SidebarContent>
-      <SidebarFooter>
-        <SidebarSeparator />
+      <SidebarFooter className="gap-2 border-t border-sidebar-border">
+        {upgradeUsage ? <SidebarUpgradeCard usage={upgradeUsage} /> : null}
         <SidebarUserButton user={user} plan={plan} />
       </SidebarFooter>
       <SidebarRail />

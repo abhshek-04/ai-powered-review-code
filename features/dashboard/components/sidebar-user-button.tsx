@@ -17,7 +17,7 @@ export function SidebarUserButton({ user, plan }: SidebarUserButtonProps) {
           user={user}
           plan={plan}
           variant="profile"
-          className="w-full [&_button]:h-12 [&_button]:w-full [&_button]:justify-start [&_button]:gap-2 [&_button]:px-2"
+          className="hover:bg-sidebar-accent aria-expanded:bg-sidebar-accent"
         />
       </SidebarMenuItem>
     </SidebarMenu>

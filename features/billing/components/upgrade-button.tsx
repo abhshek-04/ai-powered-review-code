@@ -6,7 +6,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button"
-import { statusButtonClass } from "@/features/dashboard/lib/status-style";
+import { Spinner } from "@/components/ui/spinner";
+import { SparkleIcon } from "@phosphor-icons/react";
 import { startProSubscription } from "@/lib/billing";
 
 type RazorpayCheckout = new (options: Record<string, unknown>) => {
@@ -21,7 +22,17 @@ declare global {
 
 const RAZORPAY_SCRIPT_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
-export function UpgradeButton() {
+type UpgradeButtonProps = {
+    className?: string;
+    size?: React.ComponentProps<typeof Button>["size"];
+    label?: string;
+};
+
+export function UpgradeButton({
+    className,
+    size,
+    label = "Upgrade to Pro",
+}: UpgradeButtonProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
@@ -48,6 +59,7 @@ export function UpgradeButton() {
             subscription_id: subscriptionId,
             name: "Chai Code Reviewer",
             description: "Pro plan — unlimited AI reviews",
+            theme: { color: "#10b981" },
             handler: () => {
               toast.success("Payment successful! Your Pro plan will activate shortly.");
               router.refresh();
@@ -69,9 +81,11 @@ export function UpgradeButton() {
             <Button
                 onClick={handleUpgrade}
                 disabled={loading}
-                className={cn(statusButtonClass.success)}
+                size={size}
+                className={cn(className)}
             >
-                {loading ? "Opening checkout…" : "Upgrade to Pro"}
+                {loading ? <Spinner className="size-3.5" /> : <SparkleIcon weight="fill" />}
+                {loading ? "Opening checkout…" : label}
             </Button>
         </>
     )
