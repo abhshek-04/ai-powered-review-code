@@ -986,6 +986,10 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
+  plan: 'plan',
+  razorpaySubscriptionId: 'razorpaySubscriptionId',
+  subscriptionStatus: 'subscriptionStatus',
+  subscriptionRenewsAt: 'subscriptionRenewsAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
