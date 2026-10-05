@@ -1,61 +1,49 @@
 "use client";
 
+import { formatDistanceToNow } from "date-fns";
 import {
-    ArrowSquareOut,
-    GithubLogo,
-    Plugs,
+    ArrowSquareOutIcon,
+    ChatCircleTextIcon,
+    CheckIcon,
+    GithubLogoIcon,
+    LockIcon,
+    PlugsIcon,
+    WebhooksLogoIcon,
 } from "@phosphor-icons/react";
 
 import type { GithubInstallationStatus } from "@/features/dashboard/lib/types";
 import {
     statusBadge,
     statusButtonClass,
-}
-from "@/features/dashboard/lib/status-style";
+} from "@/features/dashboard/lib/status-style";
 import { getGithubInstallUrl } from "@/features/github/utils/github-app";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 import { disconnectGithubApp } from "../actions";
-
 
 type GithubConnectCardProps = {
     userId: string;
     installation: GithubInstallationStatus;
 };
 
-
-
-function ConnectedDetails({ accountLogin }: { accountLogin: string | null }) {
-    return (
-        <p className="text-xs text-muted-foreground">
-            Installed for{" "}
-            <span className="font-medium text-green-700 dark:text-green-400">
-                @{accountLogin}
-            </span>
-            . The app can read repository metadata and post review comments on pull
-            requests.
-        </p>
-    );
-}
-
-function DisconnectedDetails() {
-    return (
-        <ul className="list-inside list-disc space-y-1 text-xs text-muted-foreground">
-            <li>Access public and private repositories you select</li>
-            <li>Receive webhooks for pull request events</li>
-            <li>Post AI-generated review comments on PRs</li>
-        </ul>
-    );
-}
+const PERMISSIONS = [
+    {
+        icon: LockIcon,
+        title: "Repository access",
+        description: "Read code and metadata for the public and private repositories you select.",
+    },
+    {
+        icon: WebhooksLogoIcon,
+        title: "Pull request webhooks",
+        description: "Get notified when pull requests are opened or updated.",
+    },
+    {
+        icon: ChatCircleTextIcon,
+        title: "Review comments",
+        description: "Post AI-generated review feedback on your pull requests.",
+    },
+] as const;
 
 function ConnectedActions() {
     return (
@@ -65,8 +53,8 @@ function ConnectedActions() {
                 variant="outline"
                 className={statusButtonClass.danger}
             >
-                <Plugs />
-                Disconnect GitHub App
+                <PlugsIcon />
+                Disconnect
             </Button>
         </form>
     );
@@ -74,103 +62,94 @@ function ConnectedActions() {
 
 function DisconnectedActions({ installUrl }: { installUrl: string }) {
     return (
-        <Button
-            nativeButton={false}
-            render={<a href={installUrl} />}
-            className={statusButtonClass.success}
-        >
-            <GithubLogo />
+        <Button nativeButton={false} render={<a href={installUrl} />}>
+            <GithubLogoIcon />
             Install GitHub App
-            <ArrowSquareOut className="size-3 opacity-80" />
+            <ArrowSquareOutIcon className="size-3.5 opacity-70" />
         </Button>
     );
-}
-
-
-
-function ConnectionDetails({
-    connected,
-    accountLogin,
-}: {
-    connected: boolean;
-    accountLogin: string | null;
-}) {
-    if (connected) {
-        return <ConnectedDetails accountLogin={accountLogin} />;
-    }
-
-    return <DisconnectedDetails />;
-}
-
-
-function ConnectionActions({
-    connected,
-    installUrl,
-}: {
-    connected: boolean;
-    installUrl: string;
-}) {
-    if (connected) {
-        return <ConnectedActions />;
-    }
-
-    return <DisconnectedActions installUrl={installUrl} />;
 }
 
 export function GithubConnectCard({
     userId,
     installation,
 }: GithubConnectCardProps) {
-    const { connected, accountLogin } = installation;
+    const { connected, accountLogin, installedAt } = installation;
     // Install URL encodes userId so the callback can associate the installation
     const installUrl = getGithubInstallUrl(userId);
 
-    // Default to neutral styling; switch to green when connected
-    let cardBorderClass = "border-border";
-    let iconWrapperClass = "border-border bg-muted";
-    let statusTone: "success" | "neutral" = "neutral";
-    let statusLabel = "Not connected";
-
-    if (connected) {
-        cardBorderClass = "border-green-500/30";
-        iconWrapperClass =
-            "border-green-500/40 bg-green-500/10 text-green-700 dark:text-green-400";
-        statusTone = "success";
-        statusLabel = "Connected";
-    }
-
     return (
-        <div className="flex flex-1 flex-col gap-6 p-6">
-            <Card className={cn("max-w-2xl transition-colors", cardBorderClass)}>
-                <CardHeader>
-                    <div className="flex items-start justify-between gap-4">
-                        <div className="flex items-center gap-3">
+        <section className="max-w-3xl overflow-hidden rounded-xl border bg-card">
+            <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
+                <span
+                    className={cn(
+                        "flex size-11 shrink-0 items-center justify-center rounded-lg border",
+                        connected
+                            ? "border-primary/30 bg-primary/10 text-primary"
+                            : "bg-muted/50 text-muted-foreground"
+                    )}
+                >
+                    <GithubLogoIcon className="size-6" />
+                </span>
+                <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="text-sm font-medium">Chai Review GitHub App</h2>
+                        <span className={statusBadge(connected ? "success" : "neutral", "normal-case")}>
                             <span
                                 className={cn(
-                                    "flex size-10 items-center justify-center rounded-none border",
-                                    iconWrapperClass
+                                    "size-1.5 rounded-full",
+                                    connected ? "bg-primary" : "bg-muted-foreground"
+                                )}
+                            />
+                            {connected ? "Connected" : "Not connected"}
+                        </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                        {connected ? (
+                            <>
+                                Installed on{" "}
+                                <span className="font-medium text-foreground">@{accountLogin}</span>
+                                {installedAt
+                                    ? ` · ${formatDistanceToNow(new Date(installedAt), { addSuffix: true })}`
+                                    : null}
+                            </>
+                        ) : (
+                            "Install the app on your GitHub account or organization to start receiving reviews."
+                        )}
+                    </p>
+                </div>
+                <div className="shrink-0">
+                    {connected ? (
+                        <ConnectedActions />
+                    ) : (
+                        <DisconnectedActions installUrl={installUrl} />
+                    )}
+                </div>
+            </div>
+
+            <div className="border-t bg-muted/20 px-5 py-4">
+                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    {connected ? "Granted permissions" : "Requested permissions"}
+                </p>
+                <ul className="grid gap-3 sm:grid-cols-3">
+                    {PERMISSIONS.map(({ icon: Icon, title, description }) => (
+                        <li key={title} className="flex gap-2.5">
+                            <span
+                                className={cn(
+                                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded",
+                                    connected ? "text-primary" : "text-muted-foreground"
                                 )}
                             >
-                                <GithubLogo className="size-5" />
+                                {connected ? <CheckIcon weight="bold" className="size-3.5" /> : <Icon className="size-4" />}
                             </span>
                             <div>
-                                <CardTitle>GitHub App</CardTitle>
-                                <CardDescription>
-                                    Install the Chai reviewer app on your GitHub account or
-                                    organization to access public and private repositories.
-                                </CardDescription>
+                                <p className="text-xs font-medium">{title}</p>
+                                <p className="text-xs leading-relaxed text-muted-foreground">{description}</p>
                             </div>
-                        </div>
-                        <span className={statusBadge(statusTone)}>{statusLabel}</span>
-                    </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <ConnectionDetails connected={connected} accountLogin={accountLogin} />
-                </CardContent>
-                <CardFooter className="flex flex-wrap gap-2">
-                    <ConnectionActions connected={connected} installUrl={installUrl} />
-                </CardFooter>
-            </Card>
-        </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </section>
     );
 }

@@ -1,68 +1,40 @@
-import React from 'react'
-import Image from "next/image";
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import { ShieldCheckIcon } from "@phosphor-icons/react/ssr";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldSet,
-} from "@/components/ui/field";
-import { GithubSignInForm } from '@/features/auth/components/github-sign-in-form'; 
+import { GithubSignInForm } from "@/features/auth/components/github-sign-in-form";
 
-// tab tittle function
 export const metadata: Metadata = {
   title: "Sign in",
-  description: "Sign in to Chai AI Code Reviewer with your GitHub account.",
+  description: "Sign in to Chai Review with your GitHub account.",
 };
 
 type SignInPageProps = {
   searchParams: Promise<{ callbackUrl?: string }>;
 };
 
+const SignInPage = async ({ searchParams }: SignInPageProps) => {
+  const { callbackUrl } = await searchParams;
 
-const SignInPage = async({searchParams}:SignInPageProps) => {
-    const {callbackUrl} = await searchParams;
   return (
-     <Card className="border-border/80 shadow-sm">
-      <CardHeader className="items-center text-center">
-        <div className="mb-6 flex justify-center pt-2">
-          <Image
-            src="/logo.svg"
-            alt="Chai AI Code Reviewer"
-            width={172}
-            height={172}
-            priority
-            className="text-foreground"
-          />
-        </div>
-        <CardTitle className="text-base">Welcome back</CardTitle>
-        <CardDescription>
+    <div className="flex flex-col gap-8">
+      <div className="space-y-2 text-center">
+        <h1 className="text-2xl font-semibold">Welcome back</h1>
+        <p className="text-sm text-muted-foreground">
           Sign in with GitHub to review and manage your code.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <FieldSet>
-          <FieldGroup>
-            <Field>
-              <GithubSignInForm callbackUrl={callbackUrl} />
-              <FieldDescription className="text-center">
-                We only request the permissions needed to identify your
-                account. You can revoke access anytime from GitHub settings.
-              </FieldDescription>
-            </Field>
-          </FieldGroup>
-        </FieldSet>
-      </CardContent>
-    </Card>
-  )
-}
+        </p>
+      </div>
 
-export default SignInPage
+      <GithubSignInForm callbackUrl={callbackUrl} />
+
+      <div className="flex gap-3 rounded-lg border bg-muted/30 p-3 text-xs leading-relaxed text-muted-foreground">
+        <ShieldCheckIcon className="mt-0.5 size-4 shrink-0 text-primary" />
+        <p>
+          We only request the permissions needed to identify your account. You
+          can revoke access anytime from your GitHub settings.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default SignInPage;

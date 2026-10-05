@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutIcon ,
-  GitBranch,
-  GithubLogo,
-  Gear,
+  GearIcon,
+  GitBranchIcon,
+  GitPullRequestIcon,
+  GithubLogoIcon,
+  SquaresFourIcon,
 } from "@phosphor-icons/react";
 
 import {
-  DASHBOARD_NAV_ITEMS,
+  DASHBOARD_NAV_GROUPS,
   type DashboardRoute,
 } from "@/features/dashboard/lib/routes";
 import {
@@ -23,10 +24,11 @@ import {
 } from "@/components/ui/sidebar";
 
 const NAV_ICONS = {
-  "layout-dashboard": LayoutIcon ,
-  "folder-git-2": GitBranch,
-  github: GithubLogo,
-  settings: Gear,
+  "layout-dashboard": SquaresFourIcon,
+  "folder-git-2": GitBranchIcon,
+  "git-pull-request": GitPullRequestIcon,
+  github: GithubLogoIcon,
+  settings: GearIcon,
 } as const;
 
 function isNavActive(pathname: string, href: DashboardRoute) {
@@ -40,31 +42,38 @@ export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-      <SidebarGroupContent>
-        <SidebarMenu>
-          {DASHBOARD_NAV_ITEMS.map((item) => {
-            const Icon = NAV_ICONS[item.icon];
-            const active = isNavActive(pathname, item.href);
+    <>
+      {DASHBOARD_NAV_GROUPS.map((group) => (
+        <SidebarGroup key={group.label}>
+          <SidebarGroupLabel className="text-[11px] uppercase tracking-wider text-muted-foreground/70">
+            {group.label}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {group.items.map((item) => {
+                const Icon = NAV_ICONS[item.icon];
+                const active = isNavActive(pathname, item.href);
 
-            return (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  isActive={active}
-                  tooltip={item.title}
-                  render={
-                    <Link href={item.href}>
-                      <Icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  }
-                />
-              </SidebarMenuItem>
-            );
-          })}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      isActive={active}
+                      tooltip={item.title}
+                      className="text-muted-foreground data-active:text-foreground [&_svg]:text-muted-foreground data-active:[&_svg]:text-primary"
+                      render={
+                        <Link href={item.href}>
+                          <Icon weight={active ? "fill" : "regular"} />
+                          <span>{item.title}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      ))}
+    </>
   );
 }

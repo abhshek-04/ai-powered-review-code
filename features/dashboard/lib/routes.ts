@@ -1,7 +1,7 @@
 export const DASHBOARD_ROUTES = {
   overview: "/dashboard",
   repos: "/dashboard/repos",
-  pullRequest:"/dashboard/pull-request",
+  pullRequest: "/dashboard/pull-request",
   github: "/dashboard/github",
   settings: "/dashboard/settings",
 } as const;
@@ -9,30 +9,40 @@ export const DASHBOARD_ROUTES = {
 export type DashboardRoute =
   (typeof DASHBOARD_ROUTES)[keyof typeof DASHBOARD_ROUTES];
 
-export const DASHBOARD_NAV_ITEMS = [
+export const DASHBOARD_NAV_GROUPS = [
   {
-    title: "Overview",
-    href: DASHBOARD_ROUTES.overview,
-    icon: "layout-dashboard" as const,
+    label: "Workspace",
+    items: [
+      {
+        title: "Overview",
+        href: DASHBOARD_ROUTES.overview,
+        icon: "layout-dashboard" as const,
+      },
+      {
+        title: "Repositories",
+        href: DASHBOARD_ROUTES.repos,
+        icon: "folder-git-2" as const,
+      },
+      {
+        title: "Pull requests",
+        href: DASHBOARD_ROUTES.pullRequest,
+        icon: "git-pull-request" as const,
+      },
+    ],
   },
   {
-    title: "Repositories",
-    href: DASHBOARD_ROUTES.repos,
-    icon: "folder-git-2" as const,
-  },
-   {
-    title: "PullRequests",
-    href: DASHBOARD_ROUTES.pullRequest,
-    icon: "folder-git-2" as const,
-  },
-  {
-    title: "GitHub App",
-    href: DASHBOARD_ROUTES.github,
-    icon: "github" as const,
-  },
-  {
-    title: "Settings",
-    href: DASHBOARD_ROUTES.settings,
-    icon: "settings" as const,
+    label: "Configuration",
+    items: [
+      {
+        title: "GitHub App",
+        href: DASHBOARD_ROUTES.github,
+        icon: "github" as const,
+      },
+      {
+        title: "Settings",
+        href: DASHBOARD_ROUTES.settings,
+        icon: "settings" as const,
+      },
+    ],
   },
 ] as const;

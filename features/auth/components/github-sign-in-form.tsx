@@ -26,7 +26,7 @@ function SubmitButton() {
   return (
     <Button
     type="submit"
-    className={"w-full"}
+    className="h-11 w-full text-sm"
     size={"lg"}
     disabled={pending}
     >
