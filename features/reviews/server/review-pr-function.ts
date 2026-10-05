@@ -46,7 +46,7 @@ export const reviewPullRequest = inngest.createFunction(
             return generateReview({
                 repoFullName: pullRequest.repoFullName,
                 title: pullRequest.title,
-                diff,
+                contextSnippets: [diff],
             });
         });
 
