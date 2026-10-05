@@ -11,6 +11,7 @@
 export type * from './models/User'
 export type * from './models/GithubInstallation'
 export type * from './models/PullRequest'
+export type * from './models/RepoSync'
 export type * from './models/Session'
 export type * from './models/Account'
 export type * from './models/Verification'

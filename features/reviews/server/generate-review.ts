@@ -46,7 +46,10 @@ Then use this structure if there are findings:
 type ReviewInput = {
     repoFullName: string;
     title: string;
-    diff: string;
+    /** Diff chunks from this PR that are relevant to the review. */
+    contextSnippets: string[];
+    /** Related code from the synced repo codebase, if the repo has been synced. */
+    repoContextSnippets?: string[];
 };
 
 function buildRepoContextSection(repoContextSnippets: string[]) {
@@ -72,7 +75,7 @@ Pull request title: ${input.title}
 
 ## Changed files (unified diff)
 
-${input.diff}${buildRepoContextSection([])}`,
+${input.contextSnippets.join("\n\n")}${buildRepoContextSection(input.repoContextSnippets ?? [])}`,
     });
 
     return text;
