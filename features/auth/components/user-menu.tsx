@@ -15,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SIGN_IN_PATH } from "../utils";
-import { CaretUpDownIcon, GearIcon, SignOutIcon } from "@phosphor-icons/react";
+import { CaretUpDownIcon, CreditCardIcon, GearIcon, SignOutIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 
 const DEFAULT_PLAN = "Free";
@@ -149,6 +149,10 @@ export function UserMenu({
           <DropdownMenuItem render={<Link href="/dashboard/settings" />}>
             <GearIcon />
             Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem render={<Link href="/dashboard/settings?tab=subscription" />}>
+            <CreditCardIcon />
+            Billing
           </DropdownMenuItem>
           <DropdownMenuItem variant="destructive" onClick={handleSignOut}>
             <SignOutIcon  />

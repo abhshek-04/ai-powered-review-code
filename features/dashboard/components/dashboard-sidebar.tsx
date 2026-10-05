@@ -15,13 +15,20 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { UserMenuUser } from "@/features/auth/components/user-menu";
+import type { UsageSummary } from "@/features/billing/server/usage";
+import { SidebarUpgradeCard } from "@/features/billing/components/sidebar-upgrade-card";
 
 type DashboardSidebarProps = {
   user: UserMenuUser;
   plan?: string;
+  upgradeUsage?: UsageSummary | null;
 };
 
-export function DashboardSidebar({ user, plan = "Pro" }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  user,
+  plan = "Free",
+  upgradeUsage = null,
+}: DashboardSidebarProps) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="h-14 justify-center border-b border-sidebar-border">
@@ -45,7 +52,8 @@ export function DashboardSidebar({ user, plan = "Pro" }: DashboardSidebarProps) 
       <SidebarContent className="pt-2">
         <DashboardNav />
       </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border">
+      <SidebarFooter className="gap-2 border-t border-sidebar-border">
+        {upgradeUsage ? <SidebarUpgradeCard usage={upgradeUsage} /> : null}
         <SidebarUserButton user={user} plan={plan} />
       </SidebarFooter>
       <SidebarRail />
