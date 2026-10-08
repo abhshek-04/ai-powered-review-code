@@ -26,7 +26,7 @@ export default function DashboardPullRequestsPage() {
     <>
       <DashboardHeader
         title="Pull requests"
-        description="Pull requests reviewed by Chai across your repositories."
+        description="Pull requests reviewed by PR Reviewer across your repositories."
       />
       <DashboardContent>
         <Empty className="rounded-xl border">

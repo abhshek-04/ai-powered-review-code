@@ -61,7 +61,7 @@ export default async function DashboardOverviewPage() {
     {
       title: "Open a pull request",
       description:
-        "Chai reviews it automatically and posts its findings on GitHub.",
+        "PR Reviewer reviews it automatically and posts its findings on GitHub.",
       done: false,
     },
   ];

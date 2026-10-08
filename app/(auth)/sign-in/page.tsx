@@ -5,7 +5,7 @@ import { GithubSignInForm } from "@/features/auth/components/github-sign-in-form
 
 export const metadata: Metadata = {
   title: "Sign in",
-  description: "Sign in to Chai Review with your GitHub account.",
+  description: "Sign in to PR Reviewer with your GitHub account.",
 };
 
 type SignInPageProps = {

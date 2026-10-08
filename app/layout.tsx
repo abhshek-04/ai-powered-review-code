@@ -18,11 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Chai — AI Code Review for GitHub",
-    template: "%s · Chai",
+    default: "PR Reviewer — AI Code Review for GitHub",
+    template: "%s · PR Reviewer",
   },
   description:
-    "Chai reviews every pull request with context from your whole codebase and posts actionable feedback directly on GitHub.",
+    "PR Reviewer reviews every pull request with context from your whole codebase and posts actionable feedback directly on GitHub.",
 };
 
 export default function RootLayout({

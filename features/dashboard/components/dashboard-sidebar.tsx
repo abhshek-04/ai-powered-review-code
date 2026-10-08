@@ -35,13 +35,13 @@ export function DashboardSidebar({
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
-              tooltip="Chai Review"
+              tooltip="PR Reviewer"
               className="hover:bg-transparent active:bg-transparent"
               render={
                 <Link href={DASHBOARD_ROUTES.overview}>
                   <LogoMark className="size-6 group-data-[collapsible=icon]:size-5" />
                   <span className="truncate text-[15px] font-semibold tracking-tight">
-                    Chai<span className="font-medium text-muted-foreground"> Review</span>
+                    PR<span className="font-medium text-muted-foreground"> Reviewer</span>
                   </span>
                 </Link>
               }

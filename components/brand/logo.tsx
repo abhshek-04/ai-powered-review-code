@@ -44,7 +44,7 @@ export function Logo({
       <LogoMark />
       {showWordmark ? (
         <span className="text-[15px] font-semibold tracking-tight">
-          Chai<span className="text-muted-foreground font-medium"> Review</span>
+          PR<span className="text-muted-foreground font-medium"> Reviewer</span>
         </span>
       ) : null}
     </span>

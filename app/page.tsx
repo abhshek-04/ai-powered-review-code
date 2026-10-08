@@ -70,7 +70,7 @@ const STEPS = [
   },
   {
     title: "Open a pull request",
-    description: "Chai reviews the diff and posts its findings as a comment automatically.",
+    description: "PR Reviewer reviews the diff and posts its findings as a comment automatically.",
   },
 ] as const;
 
@@ -99,7 +99,7 @@ export default async function Home() {
               Ship better code with a reviewer that knows your codebase
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-              Chai reads every pull request with context from your entire
+              PR Reviewer reads every pull request with context from your entire
               repository and posts precise, actionable feedback right on GitHub.
             </p>
 
@@ -204,7 +204,7 @@ export default async function Home() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:px-6">
           <div className="flex items-center gap-2">
             <LogoMark className="size-5" />
-            <span>© {new Date().getFullYear()} Chai Review</span>
+            <span>© {new Date().getFullYear()} PR Reviewer</span>
           </div>
           <nav className="flex gap-6">
             <a href="#features" className="hover:text-foreground">Features</a>
@@ -221,7 +221,7 @@ function SiteHeader({ signedIn }: { signedIn: boolean }) {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" aria-label="Chai Review home">
+        <Link href="/" aria-label="PR Reviewer home">
           <Logo />
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
@@ -296,7 +296,7 @@ function ReviewPreview() {
           <div className="space-y-3 p-4">
             <div className="flex items-center gap-2">
               <LogoMark className="size-5" />
-              <span className="text-sm font-medium">chai-review</span>
+              <span className="text-sm font-medium">pr-reviewer</span>
               <span className="rounded-full border px-1.5 py-px text-[10px] text-muted-foreground">bot</span>
             </div>
             <ReviewFinding

@@ -57,7 +57,7 @@ export function UpgradeButton({
           const checkout = new window.Razorpay({
             key,
             subscription_id: subscriptionId,
-            name: "Chai Code Reviewer",
+            name: "PR Reviewer",
             description: "Pro plan — unlimited AI reviews",
             theme: { color: "#10b981" },
             handler: () => {

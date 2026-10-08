@@ -38,7 +38,7 @@ export default async function AuthLayout({
         <div className="pointer-events-none absolute inset-0 bg-grid opacity-40 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
         <div className="pointer-events-none absolute -bottom-32 -left-32 size-[420px] rounded-full bg-primary/15 blur-[120px]" />
 
-        <Link href="/" className="relative w-fit" aria-label="Chai Review home">
+        <Link href="/" className="relative w-fit" aria-label="PR Reviewer home">
           <Logo />
         </Link>
 
@@ -59,14 +59,14 @@ export default async function AuthLayout({
         </div>
 
         <p className="relative text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Chai Review
+          © {new Date().getFullYear()} PR Reviewer
         </p>
       </aside>
 
       {/* Form panel */}
       <div className="relative flex flex-col">
         <div className="flex h-14 items-center justify-between px-4 sm:px-6">
-          <Link href="/" className="lg:invisible" aria-label="Chai Review home">
+          <Link href="/" className="lg:invisible" aria-label="PR Reviewer home">
             <Logo />
           </Link>
           <ModeToggle />
